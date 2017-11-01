@@ -1,0 +1,11 @@
+print "Guess my number";
+mynum = 67; # 67 is my hidden number
+do 
+    print "what is your guess";
+    read yournum;
+    if yournum < mynum then print "Its bigger than that"; end;
+    if yournum > mynum then print "Its smaller that that"; end;
+until mynum == yournum;
+print "Good guess";
+print "My number is";
+print mynum;

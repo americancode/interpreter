@@ -1,0 +1,9 @@
+print "Enter a number";
+read a;
+print "Your number is";
+print a;
+if a < 10 then
+   print "it is less than 10";
+else
+   print "it is greater than or equal to 10";
+end;
