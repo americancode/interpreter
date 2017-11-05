@@ -19,13 +19,18 @@ extern FILE* yyin;
 %token DO
 %token IF 
 %token THEN
+%token ELSE
 %token END  
 %token PRINT
+%token STRING
+%token UNTIL;
+%token READ;
 
-%left GE LE EQ NE '>' '<' '='
+
+%left AND OR GE LE EQ NE '>' '<' '='
 %left '+' '-'
 %left '*' '/'
-%nonassoc UMINUS
+%nonassoc UMINUS NOT
 
 %%
 
@@ -51,11 +56,25 @@ stmt:     ';'
         | PRINT expr ';' { 
               pCodeAdd(PRTI); 
           }
+          
+        | PRINT con ';' { 
+              pCodeAdd(PRTS); 
+          }
+          
+        | READ expr ';' {
+        	pCodeAdd(RDI);
+        
+        }
 
         | VARIABLE '=' expr ';' { 
               pCodeAdd(POPV); 
               pCodeAdd($1); 
           }
+          
+        | do stmt_list UNTIL expr test';' {
+        	pCodeFix($5, $1);
+        	
+        }
 
         | while expr do stmt_list jmp end ';' { 
               pCodeFix($3, $6);
@@ -65,6 +84,11 @@ stmt:     ';'
         | IF expr then stmt_list end ';' { 
               pCodeFix($3, $5);
           }
+          
+        | IF expr then stmt_list else stmt_list jmp end ';' { 
+        	pCodeFix($3, $5);
+        	pCodeFix($7, $8);
+           }
 
           ;
 
@@ -74,9 +98,9 @@ while:    WHILE {
           ;
 
 do:       DO {
-              pCodeAdd(JMPZ); 
+              //pCodeAdd(JMPZ); 
               $$ = pCodeSize(); 
-              pCodeAdd(0); 
+              //pCodeAdd(0); 
           }
 	  ;
 
@@ -85,6 +109,18 @@ then:     THEN {
               pCodeAdd(JMPZ); 
               $$ = pCodeSize(); 
               pCodeAdd(0); 
+          }
+	  ;
+
+test:      {
+              pCodeAdd(JMPZ); 
+              $$ = pCodeSize(); 
+              pCodeAdd(0); 
+          }
+	  ;
+
+else:     ELSE {
+              $$ = pCodeSize();  
           }
 	  ;
 
@@ -114,6 +150,18 @@ expr:     INTEGER {
               pCodeAdd(PSHV); 
               pCodeAdd($1);
           }
+          
+        | expr OR expr {
+        	  pCodeAdd(ORI);
+        }
+        
+        | expr AND expr {
+        	  pCodeAdd(ANDI);
+        }
+        
+        | NOT expr {
+        	  pCodeAdd(NOTI);
+        }
 
         | '-' expr %prec UMINUS { 
               pCodeAdd(NEGI); 
@@ -164,6 +212,14 @@ expr:     INTEGER {
 
         | '(' expr ')'          
           ;
+         
+         
+con: STRING {
+	 pCodeAdd(PSHS); 
+     pCodeAdd($1);
+	}
+	;
+	
 %%
 
 void yyerror(char *s) {

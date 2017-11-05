@@ -1,0 +1,30 @@
+varOne = 1;
+_varTwo = 2; // This a test Comment
+varThree0 = varOne + _varTwo;
+_2222 = varThree0 * 80;
+print _2222;
+
+
+print "Hello World";
+
+x = 0;
+
+read x;
+
+do  
+x = x + 1;
+until (x == 5);
+
+
+print "The value of X is";
+print x;
+
+b = 20;
+a =20;
+
+
+if (a < 50) and (b == 20) then
+	print "if block";
+	print "hello";
+end;
+

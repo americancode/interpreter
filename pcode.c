@@ -73,6 +73,7 @@ void evalPush(int i) {
 
 /* Pop a value from the evaluation stack 
  */
+
 int evalPop() {
     int i = _evalStack[--_evalTop];
     return i;
@@ -124,7 +125,7 @@ int pCodeSize() {
  */
 void pCodeExec() {
     int pc = 0;  // program counter within the vm
-    int parg;    // an agument following an opcode
+    int parg;    // an argument following an opcode
     int operand; // temporary operand
 
     while (pc < _pCodeSize) {
@@ -133,19 +134,31 @@ void pCodeExec() {
                    evalPush(parg);  
                    break;
 
-        case PSHV: parg = _pCode[pc++];
-                   evalPush(_mem[parg]);    
+	case PSHS: parg = _pCode[pc++];
+                   evalPush(parg);
                    break;
 
-        case POPV: parg = _pCode[pc++];
-                   _mem[parg] = evalPop(); 
-                   break;
+	case PSHV: parg = _pCode[pc++];
+			   evalPush(_mem[parg]);
+			   break;
+
+	case POPV: parg = _pCode[pc++];
+			   _mem[parg] = evalPop();
+			   break;
 
 	case JMPZ: parg = _pCode[pc++];
                    if (!evalPop()) { 
                       pc = parg;
                    }
                    break;
+
+	case JMPNZ: parg = _pCode[pc++];
+	                   if (evalPop()) {
+	                      pc = parg;
+	                   }
+	                   break;
+
+
 
 	case JMP:  parg = _pCode[pc++];
                    pc = parg;
@@ -189,9 +202,11 @@ void pCodeExec() {
 	case PRTI: printf("%d\n", evalPop());
                    break;
 
-	case PRTS: parg = _pCode[pc++];
-                   printf("%s\n", _strs[parg]);
-                   break;
+	case PRTS:
+		parg = evalPop();
+		printf("%s\n", _strs[parg]);
+		pc++;
+		break;
 
 	case RDI:  parg = _pCode[pc++];
                    printf("> ");

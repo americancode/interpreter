@@ -44,13 +44,20 @@
      DO = 261,
      IF = 262,
      THEN = 263,
-     END = 264,
-     PRINT = 265,
-     NE = 266,
-     EQ = 267,
-     LE = 268,
-     GE = 269,
-     UMINUS = 270
+     ELSE = 264,
+     END = 265,
+     PRINT = 266,
+     STRING = 267,
+     UNTIL = 268,
+     READ = 269,
+     NE = 270,
+     EQ = 271,
+     LE = 272,
+     GE = 273,
+     OR = 274,
+     AND = 275,
+     NOT = 276,
+     UMINUS = 277
    };
 #endif
 

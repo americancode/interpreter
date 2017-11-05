@@ -22,6 +22,9 @@
 #define PRTI  16
 #define PRTS  17
 #define RDI   18
+#define PSHS  19
+#define JMPNZ  20
+
 
 /* prototype for lookups */
 
