@@ -879,13 +879,14 @@ case 13:
 YY_RULE_SETUP
 #line 30 "calc5.l"
 {
-				yylval = lookupStr(yytext);
+                yytext[strlen(yytext) -1] = '\0';
+				yylval = lookupStr(yytext + 1);
 				return STRING;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 36 "calc5.l"
+#line 37 "calc5.l"
 {
                     yylval = lookupVar(yytext);
                     return VARIABLE;
@@ -893,7 +894,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 41 "calc5.l"
+#line 42 "calc5.l"
 {
                     yylval = atoi(yytext);
                     return INTEGER;
@@ -901,7 +902,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 46 "calc5.l"
+#line 47 "calc5.l"
 {
                     yylval = atoi(yytext);
                     return INTEGER;
@@ -909,45 +910,45 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 51 "calc5.l"
+#line 52 "calc5.l"
 {
                     return *yytext;
                 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 55 "calc5.l"
+#line 56 "calc5.l"
 return GE;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 56 "calc5.l"
+#line 57 "calc5.l"
 return LE;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 57 "calc5.l"
+#line 58 "calc5.l"
 return EQ;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 58 "calc5.l"
+#line 59 "calc5.l"
 return NE;
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 62 "calc5.l"
+#line 63 "calc5.l"
 ; /* ignore whitespace */
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 64 "calc5.l"
+#line 65 "calc5.l"
 ; /* ignore comment */
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 66 "calc5.l"
+#line 67 "calc5.l"
 {
                     sprintf(msg, "Unknown character [%s]", yytext);
                     yyerror(msg);
@@ -955,10 +956,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 71 "calc5.l"
+#line 72 "calc5.l"
 ECHO;
 	YY_BREAK
-#line 962 "lex.yy.c"
+#line 963 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1956,7 +1957,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 71 "calc5.l"
+#line 72 "calc5.l"
 
 
 

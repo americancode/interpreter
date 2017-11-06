@@ -7,24 +7,31 @@ print _2222;
 
 print "Hello World";
 
-x = 0;
+x = 1;
 
 read x;
 
+z = 5000000;
+
 do  
 x = x + 1;
-until (x == 5);
+print "HELLO WHATT!";
+until (x > 5);
 
 
 print "The value of X is";
-print x;
+print z;
 
-b = 20;
-a =20;
+b = 21;
+a = 20;
 
 
 if (a < 50) and (b == 20) then
-	print "if block";
-	print "hello";
+	print "hi";
+	print "HEYYY";
+	
+else 
+	print "else block";
+	print "else block";
 end;
 

@@ -134,10 +134,6 @@ void pCodeExec() {
                    evalPush(parg);  
                    break;
 
-	case PSHS: parg = _pCode[pc++];
-                   evalPush(parg);
-                   break;
-
 	case PSHV: parg = _pCode[pc++];
 			   evalPush(_mem[parg]);
 			   break;
@@ -203,9 +199,8 @@ void pCodeExec() {
                    break;
 
 	case PRTS:
-		parg = evalPop();
+		parg = _pCode[pc++];
 		printf("%s\n", _strs[parg]);
-		pc++;
 		break;
 
 	case RDI:  parg = _pCode[pc++];

@@ -1,3 +1,13 @@
+Nonterminals useless in grammar
+
+   con
+
+
+Rules useless in grammar
+
+   39 con: STRING
+
+
 Grammar
 
     0 $accept: program $end
@@ -9,13 +19,13 @@ Grammar
 
     4 stmt: ';'
     5     | PRINT expr ';'
-    6     | PRINT con ';'
+    6     | PRINT STRING ';'
     7     | READ expr ';'
     8     | VARIABLE '=' expr ';'
     9     | do stmt_list UNTIL expr test ';'
    10     | while expr do stmt_list jmp end ';'
    11     | IF expr then stmt_list end ';'
-   12     | IF expr then stmt_list else stmt_list jmp end ';'
+   12     | IF expr then stmt_list jmp else stmt_list end ';'
 
    13 while: WHILE
 
@@ -52,8 +62,6 @@ Grammar
    37     | expr EQ expr
    38     | '(' expr ')'
 
-   39 con: STRING
-
 
 Terminals, with rules where they appear
 
@@ -78,7 +86,7 @@ THEN (263) 15
 ELSE (264) 17
 END (265) 19
 PRINT (266) 5 6
-STRING (267) 39
+STRING (267) 6
 UNTIL (268) 9
 READ (269) 7
 NE (270) 36
@@ -120,8 +128,6 @@ stmt_list (44)
 expr (45)
     on left: 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38, on right:
     5 7 8 9 10 11 12 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38
-con (46)
-    on left: 39, on right: 6
 
 
 state 0
@@ -192,7 +198,7 @@ state 6
 state 7
 
    11 stmt: IF . expr then stmt_list end ';'
-   12     | IF . expr then stmt_list else stmt_list jmp end ';'
+   12     | IF . expr then stmt_list jmp else stmt_list end ';'
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -206,7 +212,7 @@ state 7
 state 8
 
     5 stmt: PRINT . expr ';'
-    6     | PRINT . con ';'
+    6     | PRINT . STRING ';'
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -216,7 +222,6 @@ state 8
     '('       shift, and go to state 19
 
     expr  go to state 22
-    con   go to state 23
 
 
 state 9
@@ -229,7 +234,7 @@ state 9
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 24
+    expr  go to state 23
 
 
 state 10
@@ -256,7 +261,7 @@ state 12
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 25
+    expr  go to state 24
 
 
 state 13
@@ -271,10 +276,10 @@ state 13
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    stmt       go to state 26
+    stmt       go to state 25
     while      go to state 12
     do         go to state 13
-    stmt_list  go to state 27
+    stmt_list  go to state 26
 
 
 state 14
@@ -287,7 +292,7 @@ state 14
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 28
+    expr  go to state 27
 
 
 state 15
@@ -314,7 +319,7 @@ state 17
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 29
+    expr  go to state 28
 
 
 state 18
@@ -327,7 +332,7 @@ state 18
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 30
+    expr  go to state 29
 
 
 state 19
@@ -340,13 +345,13 @@ state 19
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 31
+    expr  go to state 30
 
 
 state 20
 
    11 stmt: IF expr . then stmt_list end ';'
-   12     | IF expr . then stmt_list else stmt_list jmp end ';'
+   12     | IF expr . then stmt_list jmp else stmt_list end ';'
    24 expr: expr . OR expr
    25     | expr . AND expr
    28     | expr . '+' expr
@@ -360,28 +365,28 @@ state 20
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    THEN  shift, and go to state 32
-    '>'   shift, and go to state 33
-    '<'   shift, and go to state 34
-    NE    shift, and go to state 35
-    EQ    shift, and go to state 36
-    LE    shift, and go to state 37
-    GE    shift, and go to state 38
-    OR    shift, and go to state 39
-    AND   shift, and go to state 40
-    '+'   shift, and go to state 41
-    '-'   shift, and go to state 42
-    '*'   shift, and go to state 43
-    '/'   shift, and go to state 44
+    THEN  shift, and go to state 31
+    '>'   shift, and go to state 32
+    '<'   shift, and go to state 33
+    NE    shift, and go to state 34
+    EQ    shift, and go to state 35
+    LE    shift, and go to state 36
+    GE    shift, and go to state 37
+    OR    shift, and go to state 38
+    AND   shift, and go to state 39
+    '+'   shift, and go to state 40
+    '-'   shift, and go to state 41
+    '*'   shift, and go to state 42
+    '/'   shift, and go to state 43
 
-    then  go to state 45
+    then  go to state 44
 
 
 state 21
 
-   39 con: STRING .
+    6 stmt: PRINT STRING . ';'
 
-    $default  reduce using rule 39 (con)
+    ';'  shift, and go to state 45
 
 
 state 22
@@ -400,29 +405,22 @@ state 22
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
     ';'  shift, and go to state 46
 
 
 state 23
-
-    6 stmt: PRINT con . ';'
-
-    ';'  shift, and go to state 47
-
-
-state 24
 
     7 stmt: READ expr . ';'
    24 expr: expr . OR expr
@@ -438,22 +436,22 @@ state 24
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
-    ';'  shift, and go to state 48
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
+    ';'  shift, and go to state 47
 
 
-state 25
+state 24
 
    10 stmt: while expr . do stmt_list jmp end ';'
    24 expr: expr . OR expr
@@ -470,30 +468,30 @@ state 25
    37     | expr . EQ expr
 
     DO   shift, and go to state 6
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
-    do  go to state 49
+    do  go to state 48
 
 
-state 26
+state 25
 
    20 stmt_list: stmt .
 
     $default  reduce using rule 20 (stmt_list)
 
 
-state 27
+state 26
 
     9 stmt: do stmt_list . UNTIL expr test ';'
    21 stmt_list: stmt_list . stmt
@@ -503,16 +501,16 @@ state 27
     DO        shift, and go to state 6
     IF        shift, and go to state 7
     PRINT     shift, and go to state 8
-    UNTIL     shift, and go to state 50
+    UNTIL     shift, and go to state 49
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    stmt   go to state 51
+    stmt   go to state 50
     while  go to state 12
     do     go to state 13
 
 
-state 28
+state 27
 
     8 stmt: VARIABLE '=' expr . ';'
    24 expr: expr . OR expr
@@ -528,22 +526,22 @@ state 28
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
-    ';'  shift, and go to state 52
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
+    ';'  shift, and go to state 51
 
 
-state 29
+state 28
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -562,7 +560,7 @@ state 29
     $default  reduce using rule 27 (expr)
 
 
-state 30
+state 29
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -581,7 +579,7 @@ state 30
     $default  reduce using rule 26 (expr)
 
 
-state 31
+state 30
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -597,31 +595,44 @@ state 31
    37     | expr . EQ expr
    38     | '(' expr . ')'
 
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
-    ')'  shift, and go to state 53
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
+    ')'  shift, and go to state 52
 
 
-state 32
+state 31
 
    15 then: THEN .
 
     $default  reduce using rule 15 (then)
 
 
-state 33
+state 32
 
    33 expr: expr '>' . expr
+
+    INTEGER   shift, and go to state 15
+    VARIABLE  shift, and go to state 16
+    '-'       shift, and go to state 17
+    NOT       shift, and go to state 18
+    '('       shift, and go to state 19
+
+    expr  go to state 53
+
+
+state 33
+
+   32 expr: expr '<' . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -634,7 +645,7 @@ state 33
 
 state 34
 
-   32 expr: expr '<' . expr
+   36 expr: expr NE . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -647,7 +658,7 @@ state 34
 
 state 35
 
-   36 expr: expr NE . expr
+   37 expr: expr EQ . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -660,7 +671,7 @@ state 35
 
 state 36
 
-   37 expr: expr EQ . expr
+   35 expr: expr LE . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -673,7 +684,7 @@ state 36
 
 state 37
 
-   35 expr: expr LE . expr
+   34 expr: expr GE . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -686,7 +697,7 @@ state 37
 
 state 38
 
-   34 expr: expr GE . expr
+   24 expr: expr OR . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -699,7 +710,7 @@ state 38
 
 state 39
 
-   24 expr: expr OR . expr
+   25 expr: expr AND . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -712,7 +723,7 @@ state 39
 
 state 40
 
-   25 expr: expr AND . expr
+   28 expr: expr '+' . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -725,7 +736,7 @@ state 40
 
 state 41
 
-   28 expr: expr '+' . expr
+   29 expr: expr '-' . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -738,7 +749,7 @@ state 41
 
 state 42
 
-   29 expr: expr '-' . expr
+   30 expr: expr '*' . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -751,7 +762,7 @@ state 42
 
 state 43
 
-   30 expr: expr '*' . expr
+   31 expr: expr '/' . expr
 
     INTEGER   shift, and go to state 15
     VARIABLE  shift, and go to state 16
@@ -764,21 +775,8 @@ state 43
 
 state 44
 
-   31 expr: expr '/' . expr
-
-    INTEGER   shift, and go to state 15
-    VARIABLE  shift, and go to state 16
-    '-'       shift, and go to state 17
-    NOT       shift, and go to state 18
-    '('       shift, and go to state 19
-
-    expr  go to state 65
-
-
-state 45
-
    11 stmt: IF expr then . stmt_list end ';'
-   12     | IF expr then . stmt_list else stmt_list jmp end ';'
+   12     | IF expr then . stmt_list jmp else stmt_list end ';'
 
     VARIABLE  shift, and go to state 4
     WHILE     shift, and go to state 5
@@ -788,10 +786,17 @@ state 45
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    stmt       go to state 26
+    stmt       go to state 25
     while      go to state 12
     do         go to state 13
-    stmt_list  go to state 66
+    stmt_list  go to state 65
+
+
+state 45
+
+    6 stmt: PRINT STRING ';' .
+
+    $default  reduce using rule 6 (stmt)
 
 
 state 46
@@ -803,19 +808,12 @@ state 46
 
 state 47
 
-    6 stmt: PRINT con ';' .
-
-    $default  reduce using rule 6 (stmt)
-
-
-state 48
-
     7 stmt: READ expr ';' .
 
     $default  reduce using rule 7 (stmt)
 
 
-state 49
+state 48
 
    10 stmt: while expr do . stmt_list jmp end ';'
 
@@ -827,13 +825,13 @@ state 49
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    stmt       go to state 26
+    stmt       go to state 25
     while      go to state 12
     do         go to state 13
-    stmt_list  go to state 67
+    stmt_list  go to state 66
 
 
-state 50
+state 49
 
     9 stmt: do stmt_list UNTIL . expr test ';'
 
@@ -843,31 +841,31 @@ state 50
     NOT       shift, and go to state 18
     '('       shift, and go to state 19
 
-    expr  go to state 68
+    expr  go to state 67
 
 
-state 51
+state 50
 
    21 stmt_list: stmt_list stmt .
 
     $default  reduce using rule 21 (stmt_list)
 
 
-state 52
+state 51
 
     8 stmt: VARIABLE '=' expr ';' .
 
     $default  reduce using rule 8 (stmt)
 
 
-state 53
+state 52
 
    38 expr: '(' expr ')' .
 
     $default  reduce using rule 38 (expr)
 
 
-state 54
+state 53
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -883,15 +881,15 @@ state 54
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 33 (expr)
 
 
-state 55
+state 54
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -907,15 +905,15 @@ state 55
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 32 (expr)
 
 
-state 56
+state 55
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -931,15 +929,15 @@ state 56
    36     | expr NE expr .
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 36 (expr)
 
 
-state 57
+state 56
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -955,15 +953,15 @@ state 57
    37     | expr . EQ expr
    37     | expr EQ expr .
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 37 (expr)
 
 
-state 58
+state 57
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -979,15 +977,15 @@ state 58
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 35 (expr)
 
 
-state 59
+state 58
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1003,15 +1001,15 @@ state 59
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 34 (expr)
 
 
-state 60
+state 59
 
    24 expr: expr . OR expr
    24     | expr OR expr .
@@ -1027,15 +1025,15 @@ state 60
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 24 (expr)
 
 
-state 61
+state 60
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1051,15 +1049,15 @@ state 61
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 25 (expr)
 
 
-state 62
+state 61
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1075,13 +1073,13 @@ state 62
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 28 (expr)
 
 
-state 63
+state 62
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1097,13 +1095,13 @@ state 63
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 29 (expr)
 
 
-state 64
+state 63
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1122,7 +1120,7 @@ state 64
     $default  reduce using rule 30 (expr)
 
 
-state 65
+state 64
 
    24 expr: expr . OR expr
    25     | expr . AND expr
@@ -1141,30 +1139,31 @@ state 65
     $default  reduce using rule 31 (expr)
 
 
-state 66
+state 65
 
    11 stmt: IF expr then stmt_list . end ';'
-   12     | IF expr then stmt_list . else stmt_list jmp end ';'
+   12     | IF expr then stmt_list . jmp else stmt_list end ';'
    21 stmt_list: stmt_list . stmt
 
     VARIABLE  shift, and go to state 4
     WHILE     shift, and go to state 5
     DO        shift, and go to state 6
     IF        shift, and go to state 7
-    ELSE      shift, and go to state 69
-    END       shift, and go to state 70
+    END       shift, and go to state 68
     PRINT     shift, and go to state 8
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    stmt   go to state 51
+    $default  reduce using rule 18 (jmp)
+
+    stmt   go to state 50
     while  go to state 12
     do     go to state 13
-    else   go to state 71
-    end    go to state 72
+    jmp    go to state 69
+    end    go to state 70
 
 
-state 67
+state 66
 
    10 stmt: while expr do stmt_list . jmp end ';'
    21 stmt_list: stmt_list . stmt
@@ -1179,13 +1178,13 @@ state 67
 
     $default  reduce using rule 18 (jmp)
 
-    stmt   go to state 51
+    stmt   go to state 50
     while  go to state 12
     do     go to state 13
-    jmp    go to state 73
+    jmp    go to state 71
 
 
-state 68
+state 67
 
     9 stmt: do stmt_list UNTIL expr . test ';'
    24 expr: expr . OR expr
@@ -1201,83 +1200,73 @@ state 68
    36     | expr . NE expr
    37     | expr . EQ expr
 
-    '>'  shift, and go to state 33
-    '<'  shift, and go to state 34
-    NE   shift, and go to state 35
-    EQ   shift, and go to state 36
-    LE   shift, and go to state 37
-    GE   shift, and go to state 38
-    OR   shift, and go to state 39
-    AND  shift, and go to state 40
-    '+'  shift, and go to state 41
-    '-'  shift, and go to state 42
-    '*'  shift, and go to state 43
-    '/'  shift, and go to state 44
+    '>'  shift, and go to state 32
+    '<'  shift, and go to state 33
+    NE   shift, and go to state 34
+    EQ   shift, and go to state 35
+    LE   shift, and go to state 36
+    GE   shift, and go to state 37
+    OR   shift, and go to state 38
+    AND  shift, and go to state 39
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '*'  shift, and go to state 42
+    '/'  shift, and go to state 43
 
     $default  reduce using rule 16 (test)
 
-    test  go to state 74
+    test  go to state 72
 
 
-state 69
-
-   17 else: ELSE .
-
-    $default  reduce using rule 17 (else)
-
-
-state 70
+state 68
 
    19 end: END .
 
     $default  reduce using rule 19 (end)
 
 
+state 69
+
+   12 stmt: IF expr then stmt_list jmp . else stmt_list end ';'
+
+    ELSE  shift, and go to state 73
+
+    else  go to state 74
+
+
+state 70
+
+   11 stmt: IF expr then stmt_list end . ';'
+
+    ';'  shift, and go to state 75
+
+
 state 71
 
-   12 stmt: IF expr then stmt_list else . stmt_list jmp end ';'
+   10 stmt: while expr do stmt_list jmp . end ';'
 
-    VARIABLE  shift, and go to state 4
-    WHILE     shift, and go to state 5
-    DO        shift, and go to state 6
-    IF        shift, and go to state 7
-    PRINT     shift, and go to state 8
-    READ      shift, and go to state 9
-    ';'       shift, and go to state 10
+    END  shift, and go to state 68
 
-    stmt       go to state 26
-    while      go to state 12
-    do         go to state 13
-    stmt_list  go to state 75
+    end  go to state 76
 
 
 state 72
 
-   11 stmt: IF expr then stmt_list end . ';'
+    9 stmt: do stmt_list UNTIL expr test . ';'
 
-    ';'  shift, and go to state 76
+    ';'  shift, and go to state 77
 
 
 state 73
 
-   10 stmt: while expr do stmt_list jmp . end ';'
+   17 else: ELSE .
 
-    END  shift, and go to state 70
-
-    end  go to state 77
+    $default  reduce using rule 17 (else)
 
 
 state 74
 
-    9 stmt: do stmt_list UNTIL expr test . ';'
-
-    ';'  shift, and go to state 78
-
-
-state 75
-
-   12 stmt: IF expr then stmt_list else stmt_list . jmp end ';'
-   21 stmt_list: stmt_list . stmt
+   12 stmt: IF expr then stmt_list jmp else . stmt_list end ';'
 
     VARIABLE  shift, and go to state 4
     WHILE     shift, and go to state 5
@@ -1287,60 +1276,69 @@ state 75
     READ      shift, and go to state 9
     ';'       shift, and go to state 10
 
-    $default  reduce using rule 18 (jmp)
-
-    stmt   go to state 51
-    while  go to state 12
-    do     go to state 13
-    jmp    go to state 79
+    stmt       go to state 25
+    while      go to state 12
+    do         go to state 13
+    stmt_list  go to state 78
 
 
-state 76
+state 75
 
    11 stmt: IF expr then stmt_list end ';' .
 
     $default  reduce using rule 11 (stmt)
 
 
-state 77
+state 76
 
    10 stmt: while expr do stmt_list jmp end . ';'
 
-    ';'  shift, and go to state 80
+    ';'  shift, and go to state 79
 
 
-state 78
+state 77
 
     9 stmt: do stmt_list UNTIL expr test ';' .
 
     $default  reduce using rule 9 (stmt)
 
 
+state 78
+
+   12 stmt: IF expr then stmt_list jmp else stmt_list . end ';'
+   21 stmt_list: stmt_list . stmt
+
+    VARIABLE  shift, and go to state 4
+    WHILE     shift, and go to state 5
+    DO        shift, and go to state 6
+    IF        shift, and go to state 7
+    END       shift, and go to state 68
+    PRINT     shift, and go to state 8
+    READ      shift, and go to state 9
+    ';'       shift, and go to state 10
+
+    stmt   go to state 50
+    while  go to state 12
+    do     go to state 13
+    end    go to state 80
+
+
 state 79
-
-   12 stmt: IF expr then stmt_list else stmt_list jmp . end ';'
-
-    END  shift, and go to state 70
-
-    end  go to state 81
-
-
-state 80
 
    10 stmt: while expr do stmt_list jmp end ';' .
 
     $default  reduce using rule 10 (stmt)
 
 
+state 80
+
+   12 stmt: IF expr then stmt_list jmp else stmt_list end . ';'
+
+    ';'  shift, and go to state 81
+
+
 state 81
 
-   12 stmt: IF expr then stmt_list else stmt_list jmp end . ';'
-
-    ';'  shift, and go to state 82
-
-
-state 82
-
-   12 stmt: IF expr then stmt_list else stmt_list jmp end ';' .
+   12 stmt: IF expr then stmt_list jmp else stmt_list end ';' .
 
     $default  reduce using rule 12 (stmt)

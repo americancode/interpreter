@@ -57,8 +57,9 @@ stmt:     ';'
               pCodeAdd(PRTI); 
           }
           
-        | PRINT con ';' { 
-              pCodeAdd(PRTS); 
+        | PRINT STRING ';' { 
+              pCodeAdd(PRTS);
+              pCodeAdd($2);
           }
           
         | READ expr ';' {
@@ -85,9 +86,9 @@ stmt:     ';'
               pCodeFix($3, $5);
           }
           
-        | IF expr then stmt_list else stmt_list jmp end ';' { 
-        	pCodeFix($3, $5);
-        	pCodeFix($7, $8);
+        | IF expr then stmt_list jmp else stmt_list end ';' { 
+        	pCodeFix($3, $6);
+        	pCodeFix($5, $8);
            }
 
           ;

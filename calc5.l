@@ -28,7 +28,8 @@ char  msg[30];
 "not"			return NOT;
 
 L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\" {
-				yylval = lookupStr(yytext);
+                yytext[strlen(yytext) -1] = '\0';
+				yylval = lookupStr(yytext + 1);
 				return STRING;
 		}
 
