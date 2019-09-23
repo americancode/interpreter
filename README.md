@@ -1,1 +1,1 @@
-cosc430Assn6
+Scripting language intepreter in C
